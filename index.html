@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOKA HUB - البحث عن سكربتات</title>
+    <style>
+        /* إعدادات الخلفية والخط */
+        body {
+            background-color: #4a0000; /* أحمر غامق */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* تحريك العبارة فوق وتحت بشويش */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-text {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* صندوق البحث */
+        .search-container {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            text-align: center;
+        }
+
+        /* عرض السكربت */
+        #result-area {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .script-img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .get-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .get-btn:hover { background-color: #2ecc71; }
+
+        /* منطقة السكربت النهائي */
+        #script-content {
+            display: none;
+            margin-top: 15px;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .copy-btn {
+            background: #555;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* زر الديسكورد */
+        .discord-btn {
+            background-color: #3498db; /* أزرق فاتح */
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .discord-btn:hover { background-color: #5dade2; }
+
+        /* مربع الاستفسارات */
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-text">البحث عن سكربتات 🔎</div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="كتابة اسم السكربت…" oninput="searchScript()">
+    </div>
+
+    <div id="result-area">
+        <img src="https://via.placeholder.com/400x200/222/fff?text=Script+Image" id="scriptImage" class="script-img">
+        <h3 id="scriptTitle">اسم السكربت</h3>
+        <button class="get-btn" onclick="showScriptSource()">اخذ السكربت</button>
+        
+        <div id="script-content">
+            <code id="scriptCode">loadstring(game:HttpGet("..."))()</code>
+            <button class="copy-btn" onclick="copyCode()">نسخ</button>
+        </div>
+    </div>
+
+    <a href="https://discord.gg/FRnDnSwPS" class="discord-btn">نسخ الديسكورد <—</a>
+
+    <div class="info-box">
+        اي استفسار او اي اقتراح تبون نضيفه تعال الدس و روح عند الاقتراحات واقترح ولو تبون شهادة تعال افتح التكت كل أربعاء نحط الشهادة إلى يوم الأحد ❤️
+    </div>
+
+    <script>
+        // دالة وهمية لمحاكاة البحث
+        function searchScript() {
+            const input = document.getElementById('searchInput').value;
+            const resultArea = document.getElementById('result-area');
+            const scriptTitle = document.getElementById('scriptTitle');
+            const scriptContent = document.getElementById('script-content');
+
+            if(input.length > 2) {
+                resultArea.style.display = 'block';
+                scriptTitle.innerText = input;
+                scriptContent.style.display = 'none'; // إخفاء الكود عند البحث الجديد
+            } else {
+                resultArea.style.display = 'none';
+            }
+        }
+
+        function showScriptSource() {
+            document.getElementById('script-content').style.display = 'block';
+        }
+
+        function copyCode() {
+            const code = document.getElementById('scriptCode').innerText;
+            navigator.clipboard.writeText(code);
+            alert("تم نسخ السكربت بنجاح!");
+        }
+    </script>
+
+</body>
+</html>
